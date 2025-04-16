@@ -6,7 +6,7 @@ import os
 act_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Cargar el modelo entrenado
-modelo_path = os.path.join(act_dir, "runs/detect/train/weights/best.pt")  
+modelo_path = os.path.join(act_dir, "runs/detect/train/weights/best.pt") # NOTA: Editar el path según donde se almacene el archivo "best.pt"
 modelo = YOLO(modelo_path)  # Usar el modelo entrenado
 
 # Iniciar la cámara
