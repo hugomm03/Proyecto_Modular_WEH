@@ -1,7 +1,18 @@
 # Proyecto_Modular_WEH
-Github para el desarrollo del proyecto modular AIGLASSES
+Para lanzar la conexión mediante WEBRTC necesitamos iniciar primero el servidor que se encuentra en la Pi 4 como:
+- Abrir terminal
+- Escribir source AiGlassesP/bin/activate
+- Escribir cd Documents/Proyecto/Proyecto_Modular_WEH
+- Escribir python server.py
 
-![image](https://github.com/user-attachments/assets/63e7e66e-0411-4f87-ba88-d24729976e0f)
-![image](https://github.com/user-attachments/assets/2b257258-67a1-4dbc-834c-31bb20f16026)
+-HOTSPOT-
+Necesitas siempre tener activado el hotspot creado en la Raspberry Pi 4, tiene por nombre AI y su contraseña es "12345678".
 
-Para comenzar a utilizar el programa es necesario descagar las librerias de mediapipe, ultranalytics y open-cv.
+Para el cliente se repiten los pasos anteriores pero con los siguientes textos:
+- Abrir terminal
+- Escribir source AiGlasses/bin/activate
+- Escribir cd Documentos/Proyecto/Proyecto_Modular_WEH
+- Escribir python client.py
+
+-RED-
+Necesitas conectarte a la red que se emite desde la Raspberry Pi 4 en tu Raspberry Pi Zero 2W con la misma contraseña.
