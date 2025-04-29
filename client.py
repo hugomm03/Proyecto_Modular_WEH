@@ -3,10 +3,11 @@ from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack
 from aiortc.contrib.media import MediaPlayer
 from signaling import WebSocketSignaling
 from picamera2 import Picamera2
-import av
+from av import VideoFrame
 import numpy as np
+import cv2
 
-SIGNALING_SERVER = "ws://10.42.0.1:8765"
+SIGNALING_SERVER = "ws://10.42.0.1:8080"
 
 
 class PiCameraTrack(VideoStreamTrack):
@@ -14,15 +15,26 @@ class PiCameraTrack(VideoStreamTrack):
 		super().__init__()
 		self.picam2 = Picamera2()
 
-		self.picam2.configure(self.picam2.create_video_configuration(main={"size": (480,480)}))
+		self.picam2.configure(self.picam2.create_video_configuration(main={"size": (640,640), "format":'YUV420'}))
 		self.picam2.start()
 		
 	async def recv(self):
-		frame = self.picam2.capture_array()
-		print("Enviando Frame")
-		video_frame = VideoFrame.from_ndarray(frame,format ="rgb24")
-		video_frame.pts, video_frame.time_base = await self.next_timestamp()
-		return video_frame
+		try:
+			frame = self.picam2.capture_array()
+			print("Enviando Frame")
+			
+			#if frame.shape[2] == 4:
+			#	frame = frame[:,:,:3]
+			
+			#frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+			
+			video_frame = VideoFrame.from_ndarray(frame,format ="yuv420p")
+			video_frame.pts, video_frame.time_base = await self.next_timestamp()
+			return video_frame
+		except Exception as e:
+			print(f"Error capturando/enviando frame: {e}")
+			await asyncio.sleep(0.1)
+			return await self.recv()
 
 async def run():
 	signaling = WebSocketSignaling(SIGNALING_SERVER)
